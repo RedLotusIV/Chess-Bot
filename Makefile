@@ -1,11 +1,11 @@
 
 NAME = chess
 
-CFLAGS = -g3 
+CFLAGS = -Wall -Wextra -g3 
 
 CC = g++
 
-SRC = src/main.cpp src/Board.cpp utils/utils.cpp
+SRC = src/main.cpp src/Board.cpp utils/utils.cpp utils/SemiLegal.cpp
 
 OBJ = $(SRC:.cpp=.o)
 

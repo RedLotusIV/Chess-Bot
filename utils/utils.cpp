@@ -24,4 +24,3 @@ int file_to_int(char file)
 			return (-1);
 	}
 }
-
