@@ -104,28 +104,29 @@ bool	IsValidKingMove(int from, int to, Board &board, t_piece &piece)
 
 bool	IsValidRookMove(int from, int to, Board &board, t_piece &piece)
 {
-	int step;
+    int step;
+    t_piece own_color = piece.is_white ? board.get_white() : board.get_black();
+    int fromRow = from / 8;
+    int fromCol = from % 8;
+    int toRow = to / 8;
+    int toCol = to % 8;
 
-	t_piece own_color = piece.is_white ? board.get_white() : board.get_black();
-	int diff = to - from;
-	if (diff < 8 && diff > -8)
-	{
-		if (from / 8 == to / 8)
-			step = (to > from) ? 1 : -1;
-		else if (from % 8 == to % 8)
-			step = diff > 0 ? 1 : -1;
-		int current = from + step;
-		while (current != to)
-		{
-			if (board.Check_Piece(board, current))
-				return (false);
-			current += step;
-		}
-		if (own_color.Type & (1ULL << to))
-			return (false);
-		return (true);
-	}
-	return (false);
+    if (fromRow == toRow)
+        step = (to > from) ? 1 : -1;
+    else if (fromCol == toCol) 
+        step = (to > from) ? 8 : -8;
+    else
+        return (false);
+    int current = from + step;
+    while (current != to)
+    {
+        if (board.Check_Piece(board, current))
+            return false;
+        current += step;
+    }
+    if (own_color.Type & (1ULL << to))
+        return false;
+    return (true);
 }
 bool	IsValidQueenMove(int from, int to, Board &board, t_piece &piece)
 {

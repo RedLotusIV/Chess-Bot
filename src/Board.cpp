@@ -12,6 +12,7 @@ Board::~Board()
 void Board::Board_init()
 {
     BoardMap["WhitePawns"] = {0x000000000000FF00, PAWN, true, false};
+	// remove them with 0 to test other pieces
     BoardMap["WhiteKnights"] = {0x0000000000000042, KNIGHT, true, false};
     BoardMap["WhiteBishops"] = {0x0000000000000024, BISHOP, true, false};
     BoardMap["WhiteRooks"] = {0x0000000000000081, ROOK, true, false};
