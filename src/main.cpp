@@ -6,8 +6,8 @@ int main()
 {
 	Board board;
 	// board.PrintBoard();
-	// int from[2];
-	// int to[2];
+	int from[2];
+	int to[2];
 	// from[0] = 1;
 	// from[1] = 0;
 	// to[0] = 3;
@@ -101,13 +101,13 @@ int main()
 	// board.MovePiece(from, to);
 	// board.PrintBoard();
 	// cout << "----------------" << endl;
-	// from[0] = 1;
+	// from[0] = 0;
 	// from[1] = 0;
-	// to[0] = 6;
-	// to[1] = 5;
+	// to[0] = 3;
+	// to[1] = 0;
 	// board.MovePiece(from, to);
-	board.PrintBoard();
 	// cout << "----------------" << endl;
 	vector<pair<int, int>> Moves = board.GenerateMoves(true);
+	board.PrintBoard();
 	return (0);
 }
