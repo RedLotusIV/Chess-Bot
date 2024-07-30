@@ -34,7 +34,8 @@ typedef enum e_piece
 	QUEEN,
 	KING,
 	BLACK,
-	WHITE
+	WHITE,
+	SPECIAL
 }				t_piece_type;
 typedef struct s_piece
 {

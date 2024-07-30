@@ -2,7 +2,7 @@
 
 Board::Board()
 {
-	Board_init();
+	set_from_fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 }
 
 Board::~Board()
@@ -12,51 +12,32 @@ Board::~Board()
 void Board::Board_init()
 {
     BoardMap["WhitePawns"] = {0, PAWN, true, false};
-	// remove them with 0 to test other pieces
-    BoardMap["WhiteKnights"] = {0x0000000000000042, KNIGHT, true, false};
-    BoardMap["WhiteBishops"] = {0x0000000000000024, BISHOP, true, false};
-    BoardMap["WhiteRooks"] = {0x0000000000000081, ROOK, true, false};
-    BoardMap["WhiteQueens"] = {0x0000000000000008, QUEEN, true, false};
-    BoardMap["WhiteKing"] = {0x0000000000000010, KING, true, false};
-    
-    BoardMap["BlackPawns"] = {0x00FF000000000000, PAWN, false, false};
-    BoardMap["BlackKnights"] = {0x4200000000000000, KNIGHT, false, false};
-    BoardMap["BlackBishops"] = {0x2400000000000000, BISHOP, false, false};
-    BoardMap["BlackRooks"] = {0x8100000000000000, ROOK, false, false};
-    BoardMap["BlackQueens"] = {0x0800000000000000, QUEEN, false, false};
-    BoardMap["BlackKing"] = {0x1000000000000000, KING, false, false};
+    BoardMap["WhiteKnights"] = {0, KNIGHT, true, false};
+    BoardMap["WhiteBishops"] = {0, BISHOP, true, false};
+    BoardMap["WhiteRooks"] = {0, ROOK, true, false};
+    BoardMap["WhiteQueens"] = {0, QUEEN, true, false};
+    BoardMap["WhiteKing"] = {0, KING, true, false};
+    BoardMap["BlackPawns"] = {0, PAWN, false, false};
+    BoardMap["BlackKnights"] = {0, KNIGHT, false, false};
+    BoardMap["BlackBishops"] = {0, BISHOP, false, false};
+    BoardMap["BlackRooks"] = {0, ROOK, false, false};
+    BoardMap["BlackQueens"] = {0, QUEEN, false, false};
+    BoardMap["BlackKing"] = {0, KING, false, false};
 
-    BoardMap["White"] = {
-        BoardMap["WhitePawns"].Type | 
-        BoardMap["WhiteKnights"].Type | 
-        BoardMap["WhiteBishops"].Type | 
-        BoardMap["WhiteRooks"].Type | 
-        BoardMap["WhiteQueens"].Type | 
-        BoardMap["WhiteKing"].Type,
-        WHITE, true, true
-    };
-
-    BoardMap["Black"] = {
-        BoardMap["BlackPawns"].Type | 
-        BoardMap["BlackKnights"].Type | 
-        BoardMap["BlackBishops"].Type | 
-        BoardMap["BlackRooks"].Type | 
-        BoardMap["BlackQueens"].Type | 
-        BoardMap["BlackKing"].Type,
-        BLACK, false, true
-    };
-
-    BoardMap["Occupied"] = {BoardMap["Black"].Type | BoardMap["White"].Type, KING, false, true};
-    BoardMap["Empty"] = {~BoardMap["Occupied"].Type, KING, false, true};
+	BoardMap["White"] = {0, WHITE, true, true};
+	BoardMap["Black"] = {0, BLACK, true, true};
+	BoardMap["Occupied"] = {0, SPECIAL, false, true};
+	BoardMap["Empty"] = {0, SPECIAL, false, true};
 }
 
 void Board::SetPiece(U64 &bitboard, int FromSquare, int ToSquare)
 
 {
 	U64 tmp = bitboard;
-	if (tmp &= (1ULL << FromSquare))
+	if ((tmp &= (1ULL << FromSquare)) || (FromSquare == -1))
 	{
-		bitboard &= ~(1ULL << FromSquare);
+		if (FromSquare != -1)
+			bitboard &= ~(1ULL << FromSquare);
 		bitboard |= (1ULL << ToSquare);
 	}
 	else
