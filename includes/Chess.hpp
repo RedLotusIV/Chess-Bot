@@ -88,4 +88,5 @@ bool 	IsValidBishopMove(int from, int to, Board &board, t_piece &piece);
 bool 	IsValidRookMove(int from, int to, Board &board, t_piece &piece);
 bool 	IsValidQueenMove(int from, int to, Board &board, t_piece &piece);
 bool 	IsValidKingMove(int from, int to, Board &board, t_piece &piece);
+bool	IsLegalMove(int from, int to, Board &board, t_piece &piece);
 #endif

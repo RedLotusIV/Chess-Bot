@@ -3,7 +3,7 @@
 Board::Board()
 {
 	// set_from_fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-	set_from_fen("rn1qkb1r/pp5p/2p2n2/2Pp2p1/7B/5N2/PP2PPPP/1R1QKB1R w Kkq - 0 10");
+	set_from_fen("8/8/8/3R1Q2/5k2/1P5P/p1P2PP1/6K1 b - - 0 41");
 }
 
 Board::~Board()
@@ -224,13 +224,21 @@ vector<pair<int, int>> Board::GenerateMoves(bool isWhite)
 					cout << "Unknown";
 					break;
 			}
-			cout << " is white: " << piece->is_white << endl;
+			switch (piece->is_white)
+			{
+				case true:
+					cout << " is White " << endl;
+					break;
+				case false:
+					cout << " is Black " << endl;
+					break;
+			}
 		}
 		if (piece && piece->is_white == isWhite)
 		{
 			for (int to = 0; to < 64; ++to)
 			{
-				if (IsValidMove(square, to, *this, *piece))
+				if (IsLegalMove(square, to, *this, *piece))
 				{
 					moves.push_back({square, to});
 					cout << "Move from: " << square << " to: " << to << endl;

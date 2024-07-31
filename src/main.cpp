@@ -107,7 +107,7 @@ int main()
 	// to[1] = 0;
 	// board.MovePiece(from, to);
 	// cout << "----------------" << endl;
-	vector<pair<int, int>> Moves = board.GenerateMoves(true);
+	vector<pair<int, int>> Moves = board.GenerateMoves(false);
 	board.PrintBoard();
 	return (0);
 }

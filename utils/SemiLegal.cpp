@@ -2,17 +2,6 @@
 
 bool IsValidMove(int from, int to, Board &board, t_piece &piece)
 {
-	// for (int i = 0; i < 64 ; i++)
-	// {
-	// 	t_piece *king_piece = board.Check_Piece(board, i);
-	// 	if (king_piece && king_piece->piece_type == KING && king_piece->is_white == piece.is_white)
-	// 	{
-	// 		if (board.isSquareAttacked(i, !king_piece->is_white))
-	// 			return (false);
-	// 		else
-	// 			break;
-	// 	}
-	// }
 	switch (piece.piece_type)
 	{
 		case PAWN:
@@ -147,4 +136,27 @@ bool	IsValidRookMove(int from, int to, Board &board, t_piece &piece)
 bool	IsValidQueenMove(int from, int to, Board &board, t_piece &piece)
 {
 	return (IsValidRookMove(from, to, board, piece) || IsValidBishopMove(from, to, board, piece));
+}
+bool	IsLegalMove(int from, int to, Board &board, t_piece &piece)
+{
+	int FromArr[2] = {from / 8, from % 8};
+	int ToArr[2] = {to / 8, to % 8};
+	if (IsValidMove(from, to, board, piece))
+	{
+		Board temp = board;
+		temp.MovePiece(FromArr, ToArr);
+		for (int i = 0; i < 64; i++)
+		{
+			t_piece *king_piece = temp.Check_Piece(temp, i);
+			if (king_piece && king_piece->piece_type == KING && king_piece->is_white == piece.is_white)
+			{
+				if (temp.isSquareAttacked(i, king_piece->is_white))
+					return (false);
+				else
+					break;
+			}
+		}
+		return (true);
+	}
+	return (false);
 }
