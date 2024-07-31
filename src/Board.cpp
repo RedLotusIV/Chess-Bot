@@ -3,7 +3,7 @@
 Board::Board()
 {
 	// set_from_fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-	set_from_fen("8/8/8/3R1Q2/5k2/1P5P/p1P2PP1/6K1 b - - 0 41");
+	set_from_fen("6rk/pp2pp1p/2bb3P/3p2N1/3q3P/8/P1B2P2/7K w - - 0 31");
 }
 
 Board::~Board()

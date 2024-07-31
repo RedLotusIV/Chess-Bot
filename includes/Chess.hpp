@@ -49,9 +49,9 @@ typedef struct s_piece
 class Board
 {
 	private:
-		map<string, t_piece> BoardMap;
-		unsigned int castlingRights;
-		int enPassantSquare;
+		map<string, t_piece>	BoardMap;
+		unsigned int			castlingRights;
+		int						enPassantSquare;
 	public:
 		Board(void);
 		~Board(void);
