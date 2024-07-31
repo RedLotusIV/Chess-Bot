@@ -2,6 +2,17 @@
 
 bool IsValidMove(int from, int to, Board &board, t_piece &piece)
 {
+	// for (int i = 0; i < 64 ; i++)
+	// {
+	// 	t_piece *king_piece = board.Check_Piece(board, i);
+	// 	if (king_piece && king_piece->piece_type == KING && king_piece->is_white == piece.is_white)
+	// 	{
+	// 		if (board.isSquareAttacked(i, !king_piece->is_white))
+	// 			return (false);
+	// 		else
+	// 			break;
+	// 	}
+	// }
 	switch (piece.piece_type)
 	{
 		case PAWN:
@@ -24,15 +35,15 @@ bool IsValidPawnMove(int from, int to, Board &board, t_piece &piece)
 {
 	int direction = piece.is_white ? 8 : -8;
 	if (to == from + direction && !((board.Check_Piece(board, to))))
-		return true;
+		return (true);
 	if ((from / 8 == 1 && piece.is_white) || (from / 8 == 6 && !piece.is_white))
 	{
-		if (to == from + 2 * direction && !(board.Check_Piece(board, to)))
+		if (to == from + 2 * direction && !(board.Check_Piece(board, to)) && !(board.Check_Piece(board, to - direction)))
 			return (true);
 	}
 	if (to == from + direction + 1 || ((from % 8) && (to == from + direction - 1)))
 	{
-		if ((board.Check_Piece(board, to)))
+		if ((board.Check_Piece(board, to) && board.Check_Piece(board, to)->is_white != piece.is_white))
 			return (true);
 	}
 	// should add en passant

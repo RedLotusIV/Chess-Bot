@@ -2,7 +2,8 @@
 
 Board::Board()
 {
-	set_from_fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+	// set_from_fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+	set_from_fen("rn1qkb1r/pp5p/2p2n2/2Pp2p1/7B/5N2/PP2PPPP/1R1QKB1R w Kkq - 0 10");
 }
 
 Board::~Board()
@@ -11,18 +12,18 @@ Board::~Board()
 
 void Board::Board_init()
 {
-    BoardMap["WhitePawns"] = {0, PAWN, true, false};
-    BoardMap["WhiteKnights"] = {0, KNIGHT, true, false};
-    BoardMap["WhiteBishops"] = {0, BISHOP, true, false};
-    BoardMap["WhiteRooks"] = {0, ROOK, true, false};
-    BoardMap["WhiteQueens"] = {0, QUEEN, true, false};
-    BoardMap["WhiteKing"] = {0, KING, true, false};
-    BoardMap["BlackPawns"] = {0, PAWN, false, false};
-    BoardMap["BlackKnights"] = {0, KNIGHT, false, false};
-    BoardMap["BlackBishops"] = {0, BISHOP, false, false};
-    BoardMap["BlackRooks"] = {0, ROOK, false, false};
-    BoardMap["BlackQueens"] = {0, QUEEN, false, false};
-    BoardMap["BlackKing"] = {0, KING, false, false};
+	BoardMap["WhitePawns"] = {0, PAWN, true, false};
+	BoardMap["WhiteKnights"] = {0, KNIGHT, true, false};
+	BoardMap["WhiteBishops"] = {0, BISHOP, true, false};
+	BoardMap["WhiteRooks"] = {0, ROOK, true, false};
+	BoardMap["WhiteQueens"] = {0, QUEEN, true, false};
+	BoardMap["WhiteKing"] = {0, KING, true, false};
+	BoardMap["BlackPawns"] = {0, PAWN, false, false};
+	BoardMap["BlackKnights"] = {0, KNIGHT, false, false};
+	BoardMap["BlackBishops"] = {0, BISHOP, false, false};
+	BoardMap["BlackRooks"] = {0, ROOK, false, false};
+	BoardMap["BlackQueens"] = {0, QUEEN, false, false};
+	BoardMap["BlackKing"] = {0, KING, false, false};
 
 	BoardMap["White"] = {0, WHITE, true, true};
 	BoardMap["Black"] = {0, BLACK, true, true};
@@ -192,10 +193,10 @@ void Board::PrintBoard()
 
 vector<pair<int, int>> Board::GenerateMoves(bool isWhite)
 {
-    vector<pair<int, int>> moves;
-    for (int square = 0; square < 64; ++square)
+	vector<pair<int, int>> moves;
+	for (int square = 0; square < 64; ++square)
 	{
-        t_piece* piece = Check_Piece(*this, square);
+		t_piece* piece = Check_Piece(*this, square);
 		if (piece && piece->is_white == isWhite)
 		{
 			cout << "Piece: ";
@@ -225,17 +226,18 @@ vector<pair<int, int>> Board::GenerateMoves(bool isWhite)
 			}
 			cout << " is white: " << piece->is_white << endl;
 		}
-        if (piece && piece->is_white == isWhite)
+		if (piece && piece->is_white == isWhite)
 		{
-            for (int to = 0; to < 64; ++to)
+			for (int to = 0; to < 64; ++to)
 			{
-                if (IsValidMove(square, to, *this, *piece))
+				if (IsValidMove(square, to, *this, *piece))
 				{
-                    moves.push_back({square, to});
+					moves.push_back({square, to});
 					cout << "Move from: " << square << " to: " << to << endl;
 				}
-            }
-        }
-    }
-    return moves;
+			}
+		}
+	}
+	cout << "all moves are "<< moves.size() << endl;
+	return (moves);
 }

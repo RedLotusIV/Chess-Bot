@@ -37,6 +37,7 @@ typedef enum e_piece
 	WHITE,
 	SPECIAL
 }				t_piece_type;
+
 typedef struct s_piece
 {
 	U64				Type;
@@ -49,6 +50,8 @@ class Board
 {
 	private:
 		map<string, t_piece> BoardMap;
+		unsigned int castlingRights;
+		int enPassantSquare;
 	public:
 		Board(void);
 		~Board(void);
@@ -60,6 +63,7 @@ class Board
 		t_piece 				*Check_Piece(Board &board, int square);
 		vector<pair<int, int>>	GenerateMoves(bool isWhite);
 		void					set_from_fen(const string& fen);
+		bool					isSquareAttacked(int square, bool is_white);
 		t_piece					&get_white_pawns(void) { return (BoardMap["WhitePawns"]); }
 		t_piece 				&get_white_rooks(void) { return (BoardMap["WhiteRooks"]); }
 		t_piece 				&get_white_knights(void) { return (BoardMap["WhiteKnights"]); }

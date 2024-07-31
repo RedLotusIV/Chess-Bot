@@ -75,9 +75,23 @@ void	Board::set_from_fen(const string& fen)
 		BoardMap["BlackKnights"].Type | 
 		BoardMap["BlackBishops"].Type | 
 		BoardMap["BlackRooks"].Type | 
-		BoardMap["BlackQueens"].Type | 
+		BoardMap["BlackQueens"].Type |
 		BoardMap["BlackKing"].Type;
 	
 	BoardMap["Occupied"].Type = BoardMap["Black"].Type | BoardMap["White"].Type;
 	BoardMap["Empty"].Type = ~BoardMap["Occupied"].Type;
+}
+
+bool Board::isSquareAttacked(int square, bool is_white)
+{
+	for (int from = 0; from < 64; from++)
+	{
+		t_piece* piece = Check_Piece(*this, from);
+		if (piece && piece->is_white != is_white)
+		{
+			if (IsValidMove(from, square, *this, *piece))
+				return (true);
+		}
+	}
+	return (false);
 }
