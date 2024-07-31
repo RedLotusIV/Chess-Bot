@@ -197,43 +197,43 @@ vector<pair<int, int>> Board::GenerateMoves(bool isWhite)
 	for (int square = 0; square < 64; ++square)
 	{
 		t_piece* piece = Check_Piece(*this, square);
-		if (piece && piece->is_white == isWhite)
-		{
-			cout << "Piece: ";
-			switch (piece->piece_type)
-			{
-				case PAWN:
-					cout << "Pawn";
-					break;
-				case KNIGHT:
-					cout << "Knight";
-					break;
-				case BISHOP:
-					cout << "Bishop";
-					break;
-				case ROOK:
-					cout << "Rook";
-					break;
-				case QUEEN:
-					cout << "Queen";
-					break;
-				case KING:
-					cout << "King";
-					break;
-				default:
-					cout << "Unknown";
-					break;
-			}
-			switch (piece->is_white)
-			{
-				case true:
-					cout << " is White " << endl;
-					break;
-				case false:
-					cout << " is Black " << endl;
-					break;
-			}
-		}
+		// if (piece && piece->is_white == isWhite)
+		// {
+		// 	// cout << "Piece: ";
+		// 	// switch (piece->piece_type)
+		// 	// {
+		// 	// 	case PAWN:
+		// 	// 		cout << "Pawn";
+		// 	// 		break;
+		// 	// 	case KNIGHT:
+		// 	// 		cout << "Knight";
+		// 	// 		break;
+		// 	// 	case BISHOP:
+		// 	// 		cout << "Bishop";
+		// 	// 		break;
+		// 	// 	case ROOK:
+		// 	// 		cout << "Rook";
+		// 	// 		break;
+		// 	// 	case QUEEN:
+		// 	// 		cout << "Queen";
+		// 	// 		break;
+		// 	// 	case KING:
+		// 	// 		cout << "King";
+		// 	// 		break;
+		// 	// 	default:
+		// 	// 		cout << "Unknown";
+		// 	// 		break;
+		// 	// }
+		// 	// switch (piece->is_white)
+		// 	// {
+		// 	// 	case true:
+		// 	// 		cout << " is White " << endl;
+		// 	// 		break;
+		// 	// 	case false:
+		// 	// 		cout << " is Black " << endl;
+		// 	// 		break;
+		// 	// }
+		// }
 		if (piece && piece->is_white == isWhite)
 		{
 			for (int to = 0; to < 64; ++to)
@@ -241,11 +241,11 @@ vector<pair<int, int>> Board::GenerateMoves(bool isWhite)
 				if (IsLegalMove(square, to, *this, *piece))
 				{
 					moves.push_back({square, to});
-					cout << "Move from: " << square << " to: " << to << endl;
+					// cout << "Move from: " << square << " to: " << to << endl;
 				}
 			}
 		}
 	}
-	cout << "all moves are "<< moves.size() << endl;
+	// cout << "all moves are "<< moves.size() << endl;
 	return (moves);
 }
