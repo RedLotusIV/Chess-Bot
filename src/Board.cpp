@@ -4,11 +4,10 @@ Board::Board()
 {
 	// set_from_fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 	set_from_fen("6rk/pp2pp1p/2bb3P/3p2N1/3q3P/8/P1B2P2/7K w - - 0 31");
+	InitSDL();
 }
 
-Board::~Board()
-{
-}
+Board::~Board(){}
 
 void Board::Board_init()
 {
@@ -85,20 +84,6 @@ void Board::MovePiece(int from[2], int to[2])
 	t_piece &pieceBitboard = *Check_Piece(*this, fromSquare);
 	if (IsValidMove(fromSquare, toSquare, *this, pieceBitboard) == false)
 		return ;
-	// before making the move we need to check if there is a piece on the from square
-	// need to check if the piece on the from and after are not the same color
-	// if they are the same color then we need to return an error
-	// then check the type of the piece and only make the move if its legal aka:
-	// the move is in the moveset of the piece and it doesn't go outside the board
-	// then we need to check if the move is not blocked by another piece
-	// a pawn can only move forward and capture diagonally
-	// a knight can move in an L shape
-	// a bishop can move diagonally in any direction till it hits another piece
-	// a rook can move horizontally or vertically till it hits another piece
-	// a queen can move horizontally, vertically, or diagonally till it hits another piece
-	// a king can move in any direction but only one square
-	// if a king is in check then it can only move to a square that is not under attack
-	// if a king is in checkmate then the game is over
 	UnsetOthers(*this, toSquare);
 	SetPiece(pieceBitboard.Type, fromSquare, toSquare);
 	if (pieceBitboard.is_white)
@@ -153,41 +138,63 @@ void	Board::UnsetOthers(Board &board, int Square)
 
 void Board::PrintBoard()
 {
-	cout << "  a b c d e f g h" << endl;
-    for (int i = 7; i >= 0; i--)  // Start from the top row (rank 8) and go down to the bottom row (rank 1)
-    {
-        cout << i + 1 << " ";
-        for (int j = 0; j <= 7; j++) // Start from the leftmost file (file a) and go right to the rightmost file (file h)
-        {
-            int square = i * 8 + j; // 0 to 63
-            if (BoardMap["WhitePawns"].Type & (1ULL << square)) // If there is a white pawn on this square
-                cout << "P ";
-            else if (BoardMap["WhiteKnights"].Type & (1ULL << square))
-                cout << "N ";
-            else if (BoardMap["WhiteBishops"].Type & (1ULL << square))
-                cout << "B ";
-            else if (BoardMap["WhiteRooks"].Type & (1ULL << square))
-                cout << "R ";
-            else if (BoardMap["WhiteQueens"].Type & (1ULL << square))
-                cout << "Q ";
-            else if (BoardMap["WhiteKing"].Type & (1ULL << square))
-                cout << "K ";
-            else if (BoardMap["BlackPawns"].Type & (1ULL << square))
-                cout << "p ";
-            else if (BoardMap["BlackKnights"].Type & (1ULL << square))
-                cout << "n ";
-            else if (BoardMap["BlackBishops"].Type & (1ULL << square))
-                cout << "b ";
-            else if (BoardMap["BlackRooks"].Type & (1ULL << square))
-                cout << "r ";
-            else if (BoardMap["BlackQueens"].Type & (1ULL << square))
-                cout << "q ";
-            else if (BoardMap["BlackKing"].Type & (1ULL << square))
-                cout << "k ";
-            else
-                cout << ". "; // Empty square
-        }
-        cout << endl;
+	SDL_Surface *image;
+	for (int i = 7; i >= 0; i--)  // Start from the top row (rank 8) and go down to the bottom row (rank 1)
+	{
+		for (int j = 0; j <= 7; j++) // Start from the leftmost file (file a) and go right to the rightmost file (file h)
+		{
+			int square = i * 8 + j; // 0 to 63
+			const char* imagePath = nullptr;
+			if (BoardMap["WhitePawns"].Type & (1ULL << square)) // If there is a white pawn on this square
+				imagePath = "Textures/WPawn.bmp";
+			else if (BoardMap["WhiteKnights"].Type & (1ULL << square))
+				imagePath = "Textures/WKnight.bmp";
+			else if (BoardMap["WhiteBishops"].Type & (1ULL << square))
+				imagePath = "Textures/WBishop.bmp";
+			else if (BoardMap["WhiteRooks"].Type & (1ULL << square))
+				imagePath = "Textures/WRook.bmp";
+			else if (BoardMap["WhiteQueens"].Type & (1ULL << square))
+				imagePath = "Textures/WQueen.bmp";
+			else if (BoardMap["WhiteKing"].Type & (1ULL << square))
+				imagePath = "Textures/WKing.bmp";
+			else if (BoardMap["BlackPawns"].Type & (1ULL << square))
+				imagePath = "Textures/BPawn.bmp";
+			else if (BoardMap["BlackKnights"].Type & (1ULL << square))
+				imagePath = "Textures/BKnight.bmp";
+			else if (BoardMap["BlackBishops"].Type & (1ULL << square))
+				imagePath = "Textures/BBishop.bmp";
+			else if (BoardMap["BlackRooks"].Type & (1ULL << square))
+				imagePath = "Textures/BRook.bmp";
+			else if (BoardMap["BlackQueens"].Type & (1ULL << square))
+				imagePath = "Textures/BQueen.bmp";
+			else if (BoardMap["BlackKing"].Type & (1ULL << square))
+				imagePath = "Textures/BKing.bmp";
+			else
+				continue;
+
+			if (imagePath && !file_exists(imagePath))
+			{
+				std::cerr << "File does not exist: " << imagePath << std::endl;
+				SDL_DestroyRenderer(renderer);
+				SDL_DestroyWindow(window);
+				SDL_Quit();
+				exit(1);
+			}
+			image = SDL_LoadBMP(imagePath);
+			if (image == nullptr)
+			{
+				std::cerr << "Unable to load image! SDL_Error: " << SDL_GetError() << std::endl;
+				SDL_DestroyRenderer(renderer);
+				SDL_DestroyWindow(window);
+				SDL_Quit();
+				exit(1);
+			}
+			SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, image);
+			SDL_FreeSurface(image);
+			SDL_Rect dest = {j * 100, i * 100, 100, 100};
+			SDL_RenderCopy(renderer, texture, NULL, &dest);
+			SDL_DestroyTexture(texture);
+		}
 	}
 }
 
@@ -197,43 +204,7 @@ vector<pair<int, int>> Board::GenerateMoves(bool isWhite)
 	for (int square = 0; square < 64; ++square)
 	{
 		t_piece* piece = Check_Piece(*this, square);
-		// if (piece && piece->is_white == isWhite)
-		// {
-		// 	// cout << "Piece: ";
-		// 	// switch (piece->piece_type)
-		// 	// {
-		// 	// 	case PAWN:
-		// 	// 		cout << "Pawn";
-		// 	// 		break;
-		// 	// 	case KNIGHT:
-		// 	// 		cout << "Knight";
-		// 	// 		break;
-		// 	// 	case BISHOP:
-		// 	// 		cout << "Bishop";
-		// 	// 		break;
-		// 	// 	case ROOK:
-		// 	// 		cout << "Rook";
-		// 	// 		break;
-		// 	// 	case QUEEN:
-		// 	// 		cout << "Queen";
-		// 	// 		break;
-		// 	// 	case KING:
-		// 	// 		cout << "King";
-		// 	// 		break;
-		// 	// 	default:
-		// 	// 		cout << "Unknown";
-		// 	// 		break;
-		// 	// }
-		// 	// switch (piece->is_white)
-		// 	// {
-		// 	// 	case true:
-		// 	// 		cout << " is White " << endl;
-		// 	// 		break;
-		// 	// 	case false:
-		// 	// 		cout << " is Black " << endl;
-		// 	// 		break;
-		// 	// }
-		// }
+
 		if (piece && piece->is_white == isWhite)
 		{
 			for (int to = 0; to < 64; ++to)
@@ -241,11 +212,9 @@ vector<pair<int, int>> Board::GenerateMoves(bool isWhite)
 				if (IsLegalMove(square, to, *this, *piece))
 				{
 					moves.push_back({square, to});
-					// cout << "Move from: " << square << " to: " << to << endl;
 				}
 			}
 		}
 	}
-	// cout << "all moves are "<< moves.size() << endl;
 	return (moves);
 }

@@ -97,11 +97,14 @@ bool	IsValidBishopMove(int from, int to, Board &board, t_piece &piece)
 
 bool	IsValidKingMove(int from, int to, Board &board, t_piece &piece)
 {
+	int FromArr[2] = {from / 8, from % 8};
+	int ToArr[2] = {to / 8, to % 8};
 	t_piece own_color = piece.is_white ? board.get_white() : board.get_black();
 	int moves[] = {1, 9, 8, 7, -1, -9, -8, -7};
 	for (int move : moves)
 	{
-		if (to == from + move && !(own_color.Type & (1ULL << to)))
+		if (to == from + move && !(own_color.Type & (1ULL << to))
+			&& abs(FromArr[0] - ToArr[0]) <= 1 && abs(FromArr[1] - ToArr[1]) <= 1)
 			return (true);
 	}
 	return (false);

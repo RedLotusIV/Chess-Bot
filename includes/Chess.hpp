@@ -1,6 +1,8 @@
 #ifndef CHESS_H
 # define CHESS_H
 
+#include <sys/stat.h>
+#include <bits/stdc++.h>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -21,6 +23,7 @@
 #include <cassert>
 #include <fstream>
 #include <cstddef>
+#include <SDL2/SDL.h>
 
 using namespace std;
 typedef unsigned long long U64;
@@ -53,6 +56,12 @@ class Board
 		unsigned int			castlingRights;
 		int						enPassantSquare;
 	public:
+		// variables
+		SDL_Window*		window = NULL;
+		SDL_Renderer*	renderer = NULL;
+		bool			quit = false;
+		SDL_Event		e;
+		// functions
 		Board(void);
 		~Board(void);
 		void					Board_init(void);
@@ -78,6 +87,10 @@ class Board
 		t_piece 				&get_black_king(void) { return (BoardMap["BlackKing"]); }
 		t_piece 				&get_black(void) { return (BoardMap["Black"]);}
 		t_piece 				&get_white(void) { return (BoardMap["White"]);}
+		// window management
+		void					InitSDL();
+		void					HandleEvents();
+		void					RenderBoard();
 };	
 
 int		file_to_int(char file); // a function that converts a file to an integer
@@ -89,4 +102,5 @@ bool 	IsValidRookMove(int from, int to, Board &board, t_piece &piece);
 bool 	IsValidQueenMove(int from, int to, Board &board, t_piece &piece);
 bool 	IsValidKingMove(int from, int to, Board &board, t_piece &piece);
 bool	IsLegalMove(int from, int to, Board &board, t_piece &piece);
+bool	file_exists(const char *path);
 #endif

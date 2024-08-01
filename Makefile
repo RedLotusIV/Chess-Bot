@@ -1,28 +1,26 @@
-
 NAME = chess
 
-CFLAGS = -Wall -Wextra -g3 
+CXX = g++
+CXXFLAGS = -Wall -Wextra -g3
+LDFLAGS = -lSDL2
 
-CC = g++
-
-SRC = src/main.cpp src/Board.cpp utils/utils.cpp utils/SemiLegal.cpp
-
+SRC = src/main.cpp src/Board.cpp utils/utils.cpp utils/SemiLegal.cpp src/WindowManagment.cpp
 OBJ = $(SRC:.cpp=.o)
 
-all : $(NAME)
+all: $(NAME)
 
-$(NAME) : $(OBJ)
-		@$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
+$(NAME): $(OBJ)
+	@$(CXX) $(CXXFLAGS) $(OBJ) -o $(NAME) $(LDFLAGS)
 
 %.o: %.cpp
-		@$(CC) $(CFLAGS) -c $< -o $@
+	@$(CXX) $(CXXFLAGS) -c $< -o $@
 
-clean :
-		@rm -rf $(OBJ)
+clean:
+	@rm -rf $(OBJ)
 
-fclean : clean
-		@rm -rf $(NAME)
+fclean: clean
+	@rm -rf $(NAME)
 
-re : fclean all
+re: fclean all
 
 .PHONY: all clean re fclean

@@ -1,37 +1,50 @@
-#include <bits/stdc++.h>
-
 #include "../includes/Chess.hpp"
 
 int main()
 {
 	Board board;
-	board.PrintBoard();
-	while (true) {
-		vector<pair<int, int>> MovesWhite = board.GenerateMoves(true);
-		if (MovesWhite.empty()) {
-			std::cout << "Checkmate! Black wins!" << std::endl;
-			break;
+	bool isWhiteTurn = true;
+	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1"); // Set to "1" for good quality scaling
+	while (!board.quit)
+	{
+		board.HandleEvents();
+
+		if (isWhiteTurn)
+		{
+			vector<pair<int, int>> MovesWhite = board.GenerateMoves(true);
+			if (MovesWhite.empty())
+			{
+				std::cout << "Checkmate! Black wins!" << std::endl;
+				board.quit = true;
+				break;
+			}
+			int randomIndex = rand() % MovesWhite.size();
+			pair<int, int> randomMove = MovesWhite[randomIndex];
+			int from[2] = {randomMove.first / 8, randomMove.first % 8};
+			int to[2] = {randomMove.second / 8, randomMove.second % 8};
+			board.MovePiece(from, to);
 		}
-		int randomIndex = rand() % MovesWhite.size();
-		pair<int, int> randomMove = MovesWhite[randomIndex];
-		int from[2] = {randomMove.first / 8, randomMove.first % 8};
-		int to[2] = {randomMove.second / 8, randomMove.second % 8};
-		cout << "White moves from " << from[0] + 1 << " " << from[1]+ 1  << " to " << to[0] + 1 << " " << to[1] + 1 << endl;
-		board.MovePiece(from, to);
-		board.PrintBoard();
-		vector<pair<int, int>> MovesBlack = board.GenerateMoves(false);
-		if (MovesBlack.empty()) {
-			std::cout << "Checkmate! White wins!" << std::endl;
-			break;
+		else
+		{
+			vector<pair<int, int>> MovesBlack = board.GenerateMoves(false);
+			if (MovesBlack.empty())
+			{
+				std::cout << "Checkmate! White wins!" << std::endl;
+				board.quit = true;
+				break;
+			}
+			int randomIndex = rand() % MovesBlack.size();
+			pair<int, int> randomMove = MovesBlack[randomIndex];
+			int from[2] = {randomMove.first / 8, randomMove.first % 8};
+			int to[2] = {randomMove.second / 8, randomMove.second % 8};
+			board.MovePiece(from, to);
 		}
-		randomIndex = rand() % MovesBlack.size();
-		randomMove = MovesBlack[randomIndex];
-		from[0] = randomMove.first / 8;
-		from[1] = randomMove.first % 8;
-		to[0] = randomMove.second / 8;
-		to[1] = randomMove.second % 8;
-		cout << "Black moves from " << from[0] + 1 << " " << from[1] + 1 << " to " << to[0] + 1 << " " << to[1] + 1 << endl;
-		board.MovePiece(from, to);
-		board.PrintBoard();
-    }
+		board.RenderBoard();
+		SDL_Delay(100);
+		isWhiteTurn = !isWhiteTurn;
+	}
+	SDL_DestroyRenderer(board.renderer);
+	SDL_DestroyWindow(board.window);
+	SDL_Quit();
+	return (0);
 }

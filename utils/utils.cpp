@@ -95,3 +95,9 @@ bool Board::isSquareAttacked(int square, bool is_white)
 	}
 	return (false);
 }
+
+bool	file_exists(const char *path)
+{
+	struct stat buffer;
+	return (stat(path, &buffer) == 0);
+}
