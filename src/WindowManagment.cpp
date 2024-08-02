@@ -8,13 +8,33 @@ void Board::HandleEvents()
 			quit = true;
 		else if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE)
 			quit = true;
+		else if (e.type == SDL_MOUSEBUTTONDOWN && e.button.button == SDL_BUTTON_LEFT)
+		{
+			dragging = true;
+			dragStart.x = e.button.x;
+			dragStart.y = e.button.y;
+			// std::cout << "Drag started at (" << dragStart.x << ", " << dragStart.y << ")" << std::endl;
+		}
+		else if (e.type == SDL_MOUSEBUTTONUP && e.button.button == SDL_BUTTON_LEFT)
+		{
+			dragging = false;
+			dragEnd.x = e.button.x;
+			dragEnd.y = e.button.y;
+			std::cout << "Drag ended at (" << dragEnd.x << ", " << dragEnd.y << ")" << std::endl;
+			if (dragStart.x == dragEnd.x && dragStart.y == dragEnd.y)
+				suggestions(dragStart);
+			else
+			{
+				PlayerMove.first = dragStart.y / 100 * 8 + dragStart.x / 100;
+				PlayerMove.second = dragEnd.y / 100 * 8 + dragEnd.x / 100;
+			}
+		}
 	}
 }
 void Board::RenderBoard()
 {
 	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 	SDL_RenderClear(renderer);
-
 	for (int i = 0; i < 8; ++i)
 	{
 		for (int j = 0; j < 8; ++j)
@@ -60,4 +80,28 @@ void Board::InitSDL()
 		SDL_Quit();
 		exit(1);
 	}
+}
+void Board::suggestions(SDL_Point dragStart)
+{
+	vector<pair<int, int>> moves;
+	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+	SDL_SetRenderDrawColor(renderer, 0xFF, 0, 0, 0xFF);
+	int from = dragStart.y / 100 * 8 + dragStart.x / 100;
+	t_piece *piece = Check_Piece(*this, from);
+
+	if (piece != nullptr && piece->is_white == false)
+	{
+		moves = PieceMoves(*this, *piece, from);
+		if (moves.empty())
+			return;
+		for (auto move : moves)
+		{
+			int x = (move.second % 8) * 100;
+			int y = (move.second / 8) * 100;
+			SDL_Rect rect = {x, y, 100, 100};
+			SDL_RenderFillRect(renderer, &rect);
+		}
+	}
+
+	SDL_RenderPresent(renderer);
 }

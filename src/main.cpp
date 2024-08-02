@@ -8,8 +8,7 @@ int main()
 	while (!board.quit)
 	{
 		board.HandleEvents();
-
-		if (isWhiteTurn)
+		if (isWhiteTurn == true && board.PlayerTurn == false)
 		{
 			vector<pair<int, int>> MovesWhite = board.GenerateMoves(true);
 			if (MovesWhite.empty())
@@ -22,25 +21,31 @@ int main()
 			pair<int, int> randomMove = MovesWhite[randomIndex];
 			int from[2] = {randomMove.first / 8, randomMove.first % 8};
 			int to[2] = {randomMove.second / 8, randomMove.second % 8};
-			board.MovePiece(from, to);
+			if (board.Check_Piece(board, randomMove.first) && IsLegalMove(randomMove.first, randomMove.second, board,
+				*board.Check_Piece(board, randomMove.first)))
+            {
+                board.MovePiece(from, to);
+                board.RenderBoard();
+                board.PlayerTurn = true;
+            }
 		}
-		else
+		else if (isWhiteTurn == false && board.PlayerTurn == true)
 		{
-			vector<pair<int, int>> MovesBlack = board.GenerateMoves(false);
-			if (MovesBlack.empty())
-			{
-				std::cout << "Checkmate! White wins!" << std::endl;
-				board.quit = true;
-				break;
-			}
-			int randomIndex = rand() % MovesBlack.size();
-			pair<int, int> randomMove = MovesBlack[randomIndex];
-			int from[2] = {randomMove.first / 8, randomMove.first % 8};
-			int to[2] = {randomMove.second / 8, randomMove.second % 8};
-			board.MovePiece(from, to);
+
+			 if (board.PlayerMove.first != -1 && board.PlayerMove.second != -1)
+            {
+                pair<int, int> move = board.PlayerMove;
+                int from[2] = {move.first / 8, move.first % 8};
+                int to[2] = {move.second / 8, move.second % 8};
+                if (board.Check_Piece(board, move.first) && IsLegalMove(move.first, move.second, board, *board.Check_Piece(board, move.first)))
+                {
+                    board.MovePiece(from, to);
+                    board.RenderBoard();
+                    board.PlayerTurn = false;
+                    board.PlayerMove = make_pair(-1, -1);
+                }
+            }
 		}
-		board.RenderBoard();
-		SDL_Delay(100);
 		isWhiteTurn = !isWhiteTurn;
 	}
 	SDL_DestroyRenderer(board.renderer);

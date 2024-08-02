@@ -153,7 +153,7 @@ void Board::PrintBoard()
 				imagePath = "Textures/WBishop.bmp";
 			else if (BoardMap["WhiteRooks"].Type & (1ULL << square))
 				imagePath = "Textures/WRook.bmp";
-			else if (BoardMap["WhiteQueens"].Type & (1ULL << square))
+			else if (BoardMap["0xFFWhiteQueens"].Type & (1ULL << square))
 				imagePath = "Textures/WQueen.bmp";
 			else if (BoardMap["WhiteKing"].Type & (1ULL << square))
 				imagePath = "Textures/WKing.bmp";
@@ -210,9 +210,7 @@ vector<pair<int, int>> Board::GenerateMoves(bool isWhite)
 			for (int to = 0; to < 64; ++to)
 			{
 				if (IsLegalMove(square, to, *this, *piece))
-				{
 					moves.push_back({square, to});
-				}
 			}
 		}
 	}

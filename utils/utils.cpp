@@ -101,3 +101,14 @@ bool	file_exists(const char *path)
 	struct stat buffer;
 	return (stat(path, &buffer) == 0);
 }
+
+vector<pair<int, int>> PieceMoves(Board &board, t_piece piece, int square)
+{
+	vector<pair<int, int>> moves;
+	for (int to = 0; to < 64; ++to)
+	{
+		if (IsLegalMove(square, to, board, piece))
+			moves.push_back({square, to});
+	}
+	return (moves);
+}

@@ -60,7 +60,14 @@ class Board
 		SDL_Window*		window = NULL;
 		SDL_Renderer*	renderer = NULL;
 		bool			quit = false;
+		bool			dragging = false;
+		bool 			isWhiteTurn = true;
+		bool			PlayerTurn = false;
+		e_piece			PlayerColor = WHITE;
+		pair<int, int>	PlayerMove = make_pair(-1, -1);
 		SDL_Event		e;
+		SDL_Point		dragStart;
+		SDL_Point		dragEnd;
 		// functions
 		Board(void);
 		~Board(void);
@@ -91,16 +98,18 @@ class Board
 		void					InitSDL();
 		void					HandleEvents();
 		void					RenderBoard();
+		void					suggestions(SDL_Point dragStart);
 };	
 
-int		file_to_int(char file); // a function that converts a file to an integer
-bool	IsValidMove(int from, int to, Board &board, t_piece &piece); // a function that checks if a move is valid
-bool	IsValidPawnMove(int from, int to, Board &board, t_piece &piece); // a function that checks if a pawn move is valid
-bool 	IsValidKnightMove(int from, int to, Board &board, t_piece &piece);
-bool 	IsValidBishopMove(int from, int to, Board &board, t_piece &piece);
-bool 	IsValidRookMove(int from, int to, Board &board, t_piece &piece);
-bool 	IsValidQueenMove(int from, int to, Board &board, t_piece &piece);
-bool 	IsValidKingMove(int from, int to, Board &board, t_piece &piece);
-bool	IsLegalMove(int from, int to, Board &board, t_piece &piece);
-bool	file_exists(const char *path);
+int						file_to_int(char file); // a function that converts a file to an integer
+bool					IsValidMove(int from, int to, Board &board, t_piece &piece); // a function that checks if a move is valid
+bool					IsValidPawnMove(int from, int to, Board &board, t_piece &piece); // a function that checks if a pawn move is valid
+bool 					IsValidKnightMove(int from, int to, Board &board, t_piece &piece);
+bool 					IsValidBishopMove(int from, int to, Board &board, t_piece &piece);
+bool 					IsValidRookMove(int from, int to, Board &board, t_piece &piece);
+bool 					IsValidQueenMove(int from, int to, Board &board, t_piece &piece);
+bool 					IsValidKingMove(int from, int to, Board &board, t_piece &piece);
+bool					IsLegalMove(int from, int to, Board &board, t_piece &piece);
+bool					file_exists(const char *path);
+vector<pair<int, int>>	PieceMoves(Board &board, t_piece piece, int square);
 #endif
