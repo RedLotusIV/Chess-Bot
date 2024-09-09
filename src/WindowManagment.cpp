@@ -20,13 +20,13 @@ void Board::HandleEvents()
 			dragging = false;
 			dragEnd.x = e.button.x;
 			dragEnd.y = e.button.y;
-			std::cout << "Drag ended at (" << dragEnd.x << ", " << dragEnd.y << ")" << std::endl;
 			if (dragStart.x == dragEnd.x && dragStart.y == dragEnd.y)
 				suggestions(dragStart);
 			else
 			{
 				PlayerMove.first = dragStart.y / 100 * 8 + dragStart.x / 100;
 				PlayerMove.second = dragEnd.y / 100 * 8 + dragEnd.x / 100;
+				suggestionsOn = false;
 			}
 		}
 	}
@@ -40,7 +40,7 @@ void Board::RenderBoard()
 		for (int j = 0; j < 8; ++j)
 		{
 			SDL_Rect rect = { j * 100, i * 100, 100, 100 };
-			if ((i + j) % 2 == 0)
+			if (!((i + j) % 2))
 				SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 			else
 				SDL_SetRenderDrawColor(renderer, 0x30, 0x30, 0x30, 0xFF);
@@ -59,7 +59,7 @@ void Board::InitSDL()
 		exit(1);
 	}
 	// Create a window
-	window = SDL_CreateWindow("SDL Example",
+	window = SDL_CreateWindow("Chess Engine",
 											SDL_WINDOWPOS_CENTERED,
 											SDL_WINDOWPOS_CENTERED,
 											800, 800,
@@ -83,6 +83,12 @@ void Board::InitSDL()
 }
 void Board::suggestions(SDL_Point dragStart)
 {
+	cout << suggestionsOn << endl;
+	if (suggestionsOn)
+	{
+		RenderBoard();
+		suggestionsOn = false;
+	}
 	vector<pair<int, int>> moves;
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	SDL_SetRenderDrawColor(renderer, 0xFF, 0, 0, 0xFF);
@@ -101,6 +107,7 @@ void Board::suggestions(SDL_Point dragStart)
 			SDL_Rect rect = {x, y, 100, 100};
 			SDL_RenderFillRect(renderer, &rect);
 		}
+		suggestionsOn = true;
 	}
 
 	SDL_RenderPresent(renderer);

@@ -63,14 +63,16 @@ class Board
 		bool			dragging = false;
 		bool 			isWhiteTurn = true;
 		bool			PlayerTurn = false;
+		bool			suggestionsOn = false;
 		e_piece			PlayerColor = WHITE;
 		pair<int, int>	PlayerMove = make_pair(-1, -1);
 		SDL_Event		e;
 		SDL_Point		dragStart;
 		SDL_Point		dragEnd;
-		// functions
 		Board(void);
 		~Board(void);
+		
+		// functions
 		void					Board_init(void);
 		void					PrintBoard(void);
 		void					SetPiece(U64 &bitboard, int FromSquare, int ToSquare);

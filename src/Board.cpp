@@ -2,8 +2,8 @@
 
 Board::Board()
 {
-	// set_from_fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-	set_from_fen("6rk/pp2pp1p/2bb3P/3p2N1/3q3P/8/P1B2P2/7K w - - 0 31");
+	set_from_fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+	// set_from_fen("r4rk1/p1p2p1p/2p2B2/4p3/2B1p3/1PKP4/P1P3R1/8 b - - 0 25");
 	InitSDL();
 }
 
