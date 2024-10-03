@@ -77,8 +77,8 @@ class Board
 		void					PrintBoard(void);
 		void					SetPiece(U64 &bitboard, int FromSquare, int ToSquare);
 		void					MovePiece(int from[2], int to[2]);
-		void					UnsetOthers(Board &board, int Square);
-		t_piece 				*Check_Piece(Board &board, int square);
+		void					UnsetOthers(int Square);
+		t_piece 				*Check_Piece(int square);
 		vector<pair<int, int>>	GenerateMoves(bool isWhite);
 		void					set_from_fen(const string& fen);
 		bool					isSquareAttacked(int square, bool is_white);
@@ -106,12 +106,13 @@ class Board
 int						file_to_int(char file); // a function that converts a file to an integer
 bool					IsValidMove(int from, int to, Board &board, t_piece &piece); // a function that checks if a move is valid
 bool					IsValidPawnMove(int from, int to, Board &board, t_piece &piece); // a function that checks if a pawn move is valid
-bool 					IsValidKnightMove(int from, int to, Board &board, t_piece &piece);
-bool 					IsValidBishopMove(int from, int to, Board &board, t_piece &piece);
-bool 					IsValidRookMove(int from, int to, Board &board, t_piece &piece);
-bool 					IsValidQueenMove(int from, int to, Board &board, t_piece &piece);
-bool 					IsValidKingMove(int from, int to, Board &board, t_piece &piece);
-bool					IsLegalMove(int from, int to, Board &board, t_piece &piece);
-bool					file_exists(const char *path);
-vector<pair<int, int>>	PieceMoves(Board &board, t_piece piece, int square);
+bool 					IsValidKnightMove(int from, int to, Board &board, t_piece &piece); // a function that checks if a knight move is valid
+bool 					IsValidBishopMove(int from, int to, Board &board, t_piece &piece); // a function that checks if a bishop move is valid
+bool 					IsValidRookMove(int from, int to, Board &board, t_piece &piece); // a function that checks if a rook move is valid
+bool 					IsValidQueenMove(int from, int to, Board &board, t_piece &piece); // a function that checks if a queen move is valid
+bool 					IsValidKingMove(int from, int to, Board &board, t_piece &piece); // a function that checks if a king move is valid
+bool					IsLegalMove(int from, int to, Board &board, t_piece &piece); // a function that checks if a move is legal
+bool					file_exists(const char *path); // a function that checks if a file exists
+vector<pair<int, int>>	PieceMoves(Board &board, t_piece piece, int square); // a function that returns all the moves a piece can make
+
 #endif

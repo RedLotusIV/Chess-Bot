@@ -47,32 +47,32 @@ void Board::SetPiece(U64 &bitboard, int FromSquare, int ToSquare)
 	}
 }
 
-t_piece *Board::Check_Piece(Board &board, int square)
+t_piece *Board::Check_Piece(int square)
 {
-    if (board.get_white_pawns().Type & (1ULL << square))
-        return &board.get_white_pawns();
-    else if (board.get_white_knights().Type & (1ULL << square))
-        return &board.get_white_knights();
-    else if (board.get_white_bishops().Type & (1ULL << square))
-        return &board.get_white_bishops();
-    else if (board.get_white_rooks().Type & (1ULL << square))
-        return &board.get_white_rooks();
-    else if (board.get_white_queen().Type & (1ULL << square))
-        return &board.get_white_queen();
-    else if (board.get_white_king().Type & (1ULL << square))
-        return &board.get_white_king();
-    else if (board.get_black_pawns().Type & (1ULL << square))
-        return &board.get_black_pawns();
-    else if (board.get_black_knights().Type & (1ULL << square))
-        return &board.get_black_knights();
-    else if (board.get_black_bishops().Type & (1ULL << square))
-        return &board.get_black_bishops();
-    else if (board.get_black_rooks().Type & (1ULL << square))
-        return &board.get_black_rooks();
-    else if (board.get_black_queen().Type & (1ULL << square))
-        return &board.get_black_queen();
-    else if (board.get_black_king().Type & (1ULL << square))
-        return &board.get_black_king();
+    if (this->get_white_pawns().Type & (1ULL << square))
+        return &this->get_white_pawns();
+    else if (this->get_white_knights().Type & (1ULL << square))
+        return &this->get_white_knights();
+    else if (this->get_white_bishops().Type & (1ULL << square))
+        return &this->get_white_bishops();
+    else if (this->get_white_rooks().Type & (1ULL << square))
+        return &this->get_white_rooks();
+    else if (this->get_white_queen().Type & (1ULL << square))
+        return &this->get_white_queen();
+    else if (this->get_white_king().Type & (1ULL << square))
+        return &this->get_white_king();
+    else if (this->get_black_pawns().Type & (1ULL << square))
+        return &this->get_black_pawns();
+    else if (this->get_black_knights().Type & (1ULL << square))
+        return &this->get_black_knights();
+    else if (this->get_black_bishops().Type & (1ULL << square))
+        return &this->get_black_bishops();
+    else if (this->get_black_rooks().Type & (1ULL << square))
+        return &this->get_black_rooks();
+    else if (this->get_black_queen().Type & (1ULL << square))
+        return &this->get_black_queen();
+    else if (this->get_black_king().Type & (1ULL << square))
+        return &this->get_black_king();
     else
 		return (nullptr);
 }
@@ -81,11 +81,12 @@ void Board::MovePiece(int from[2], int to[2])
 {
 	int	fromSquare = from[0] * 8 + from[1];
 	int	toSquare = to[0] * 8 + to[1];
-	t_piece &pieceBitboard = *Check_Piece(*this, fromSquare);
+	t_piece &pieceBitboard = *Check_Piece(fromSquare);
 	if (IsValidMove(fromSquare, toSquare, *this, pieceBitboard) == false)
 		return ;
-	UnsetOthers(*this, toSquare);
+	UnsetOthers(toSquare);
 	SetPiece(pieceBitboard.Type, fromSquare, toSquare);
+
 	if (pieceBitboard.is_white)
 	{
 		BoardMap["White"].Type |= (1ULL << toSquare);
@@ -102,37 +103,37 @@ void Board::MovePiece(int from[2], int to[2])
     BoardMap["Empty"].Type = ~BoardMap["Occupied"].Type;
 }
 
-void	Board::UnsetOthers(Board &board, int Square)
+void	Board::UnsetOthers(int Square)
 {
-	if (board.get_white_pawns().Type & (1ULL << Square))
-		board.BoardMap["WhitePawns"].Type &= ~(1ULL << Square);
-    else if (board.get_white_knights().Type & (1ULL << Square))
-		board.BoardMap["WhiteKnights"].Type &= ~(1ULL << Square);
-    else if (board.get_white_bishops().Type & (1ULL << Square))
-		board.BoardMap["WhiteBishops"].Type &= ~(1ULL << Square);
-    else if (board.get_white_rooks().Type & (1ULL << Square))
-		board.BoardMap["WhiteRooks"].Type &= ~(1ULL << Square);
-    else if (board.get_white_queen().Type & (1ULL << Square))
-		board.BoardMap["WhiteQueens"].Type &= ~(1ULL << Square);
-    else if (board.get_white_king().Type & (1ULL << Square))
-		board.BoardMap["WhiteKing"].Type &= ~(1ULL << Square);
-	else if (board.get_black_pawns().Type & (1ULL << Square))
-		board.BoardMap["BlackPawns"].Type &= ~(1ULL << Square);
-	else if (board.get_black_knights().Type & (1ULL << Square))
-		board.BoardMap["BlackKnights"].Type &= ~(1ULL << Square);
-	else if (board.get_black_bishops().Type & (1ULL << Square))
-		board.BoardMap["BlackBishops"].Type &= ~(1ULL << Square);
-	else if (board.get_black_rooks().Type & (1ULL << Square))
-		board.BoardMap["BlackRooks"].Type &= ~(1ULL << Square);
-	else if (board.get_black_queen().Type & (1ULL << Square))
-		board.BoardMap["BlackQueens"].Type &= ~(1ULL << Square);
-	else if (board.get_black_king().Type & (1ULL << Square))
-		board.BoardMap["BlackKing"].Type &= ~(1ULL << Square);
+	if (this->get_white_pawns().Type & (1ULL << Square))
+		this->BoardMap["WhitePawns"].Type &= ~(1ULL << Square);
+    else if (this->get_white_knights().Type & (1ULL << Square))
+		this->BoardMap["WhiteKnights"].Type &= ~(1ULL << Square);
+    else if (this->get_white_bishops().Type & (1ULL << Square))
+		this->BoardMap["WhiteBishops"].Type &= ~(1ULL << Square);
+    else if (this->get_white_rooks().Type & (1ULL << Square))
+		this->BoardMap["WhiteRooks"].Type &= ~(1ULL << Square);
+    else if (this->get_white_queen().Type & (1ULL << Square))
+		this->BoardMap["WhiteQueens"].Type &= ~(1ULL << Square);
+    else if (this->get_white_king().Type & (1ULL << Square))
+		this->BoardMap["WhiteKing"].Type &= ~(1ULL << Square);
+	else if (this->get_black_pawns().Type & (1ULL << Square))
+		this->BoardMap["BlackPawns"].Type &= ~(1ULL << Square);
+	else if (this->get_black_knights().Type & (1ULL << Square))
+		this->BoardMap["BlackKnights"].Type &= ~(1ULL << Square);
+	else if (this->get_black_bishops().Type & (1ULL << Square))
+		this->BoardMap["BlackBishops"].Type &= ~(1ULL << Square);
+	else if (this->get_black_rooks().Type & (1ULL << Square))
+		this->BoardMap["BlackRooks"].Type &= ~(1ULL << Square);
+	else if (this->get_black_queen().Type & (1ULL << Square))
+		this->BoardMap["BlackQueens"].Type &= ~(1ULL << Square);
+	else if (this->get_black_king().Type & (1ULL << Square))
+		this->BoardMap["BlackKing"].Type &= ~(1ULL << Square);
 
-	if (board.BoardMap["Black"].Type & (1ULL >> Square))
-		board.BoardMap["Black"].Type &= ~(1ULL >> Square);
-	else if (board.BoardMap["White"].Type & (1ULL >> Square))
-		board.BoardMap["White"].Type &= ~(1ULL >> Square);
+	if (this->BoardMap["Black"].Type & (1ULL >> Square))
+		this->BoardMap["Black"].Type &= ~(1ULL >> Square);
+	else if (this->BoardMap["White"].Type & (1ULL >> Square))
+		this->BoardMap["White"].Type &= ~(1ULL >> Square);
 	return ;
 }
 
@@ -153,7 +154,7 @@ void Board::PrintBoard()
 				imagePath = "Textures/WBishop.bmp";
 			else if (BoardMap["WhiteRooks"].Type & (1ULL << square))
 				imagePath = "Textures/WRook.bmp";
-			else if (BoardMap["0xFFWhiteQueens"].Type & (1ULL << square))
+			else if (BoardMap["WhiteQueens"].Type & (1ULL << square))
 				imagePath = "Textures/WQueen.bmp";
 			else if (BoardMap["WhiteKing"].Type & (1ULL << square))
 				imagePath = "Textures/WKing.bmp";
@@ -203,7 +204,7 @@ vector<pair<int, int>> Board::GenerateMoves(bool isWhite)
 	vector<pair<int, int>> moves;
 	for (int square = 0; square < 64; ++square)
 	{
-		t_piece* piece = Check_Piece(*this, square);
+		t_piece* piece = Check_Piece(square);
 
 		if (piece && piece->is_white == isWhite)
 		{

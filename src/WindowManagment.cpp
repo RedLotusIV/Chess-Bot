@@ -13,21 +13,32 @@ void Board::HandleEvents()
 			dragging = true;
 			dragStart.x = e.button.x;
 			dragStart.y = e.button.y;
-			// std::cout << "Drag started at (" << dragStart.x << ", " << dragStart.y << ")" << std::endl;
+			
+			if (suggestionsOn)
+			{
+			suggestionsOn = false;
+				RenderBoard();
+			}
 		}
 		else if (e.type == SDL_MOUSEBUTTONUP && e.button.button == SDL_BUTTON_LEFT)
 		{
 			dragging = false;
 			dragEnd.x = e.button.x;
 			dragEnd.y = e.button.y;
-			if (dragStart.x == dragEnd.x && dragStart.y == dragEnd.y)
-				suggestions(dragStart);
-			else
+			if (abs(dragEnd.x - dragStart.x) > 10 || abs(dragEnd.y - dragStart.y) > 10)
 			{
-				PlayerMove.first = dragStart.y / 100 * 8 + dragStart.x / 100;
-				PlayerMove.second = dragEnd.y / 100 * 8 + dragEnd.x / 100;
-				suggestionsOn = false;
+				int fromSquare = dragStart.y / 100 * 8 + dragStart.x / 100;
+				int toSquare = dragEnd.y / 100 * 8 + dragEnd.x / 100;
+				
+				t_piece* piece = this->Check_Piece(fromSquare);
+				if (piece && piece->is_white != isWhiteTurn)
+				{
+					PlayerMove = make_pair(fromSquare, toSquare);
+					suggestionsOn = false;
+				}
 			}
+			else
+				suggestions(dragStart);
 		}
 	}
 }
@@ -86,17 +97,18 @@ void Board::suggestions(SDL_Point dragStart)
 	cout << suggestionsOn << endl;
 	if (suggestionsOn)
 	{
-		RenderBoard();
 		suggestionsOn = false;
+		RenderBoard();
 	}
 	vector<pair<int, int>> moves;
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	SDL_SetRenderDrawColor(renderer, 0xFF, 0, 0, 0xFF);
 	int from = dragStart.y / 100 * 8 + dragStart.x / 100;
-	t_piece *piece = Check_Piece(*this, from);
+	t_piece *piece = Check_Piece(from);
 
 	if (piece != nullptr && piece->is_white == false)
 	{
+		suggestionsOn = true;
 		moves = PieceMoves(*this, *piece, from);
 		if (moves.empty())
 			return;
@@ -107,8 +119,6 @@ void Board::suggestions(SDL_Point dragStart)
 			SDL_Rect rect = {x, y, 100, 100};
 			SDL_RenderFillRect(renderer, &rect);
 		}
-		suggestionsOn = true;
 	}
-
 	SDL_RenderPresent(renderer);
 }

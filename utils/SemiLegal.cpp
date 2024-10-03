@@ -23,16 +23,16 @@ bool IsValidMove(int from, int to, Board &board, t_piece &piece)
 bool IsValidPawnMove(int from, int to, Board &board, t_piece &piece)
 {
 	int direction = piece.is_white ? 8 : -8;
-	if (to == from + direction && !((board.Check_Piece(board, to))))
+	if (to == from + direction && !((board.Check_Piece(to))))
 		return (true);
 	if ((from / 8 == 1 && piece.is_white) || (from / 8 == 6 && !piece.is_white))
 	{
-		if (to == from + 2 * direction && !(board.Check_Piece(board, to)) && !(board.Check_Piece(board, to - direction)))
+		if (to == from + 2 * direction && !(board.Check_Piece(to)) && !(board.Check_Piece(to - direction)))
 			return (true);
 	}
 	if (to == from + direction + 1 || ((from % 8) && (to == from + direction - 1)))
 	{
-		if ((board.Check_Piece(board, to) && board.Check_Piece(board, to)->is_white != piece.is_white))
+		if ((board.Check_Piece(to) && board.Check_Piece(to)->is_white != piece.is_white))
 			return (true);
 	}
 	// should add en passant
@@ -83,11 +83,11 @@ bool	IsValidBishopMove(int from, int to, Board &board, t_piece &piece)
 		int current = from + step;
 		while (current != to)
 		{
-			if (board.Check_Piece(board, current))
+			if (board.Check_Piece(current))
 				return (false);
 			current += step;
 		}
-		if (board.Check_Piece(board, to) && board.Check_Piece(board, to)->is_white == piece.is_white)
+		if (board.Check_Piece(to) && board.Check_Piece(to)->is_white == piece.is_white)
 			return (false);
 		return (true);
 	}
@@ -101,8 +101,8 @@ bool	IsValidKingMove(int from, int to, Board &board, t_piece &piece)
 	int moves[] = {1, 9, 8, 7, -1, -9, -8, -7};
 	for (int move : moves)
 	{
-		if (to == from + move && ((board.Check_Piece(board, to) == nullptr
-			|| (board.Check_Piece(board, to) && board.Check_Piece(board, to)->is_white != piece.is_white)))
+		if (to == from + move && ((board.Check_Piece(to) == nullptr
+			|| (board.Check_Piece(to) && board.Check_Piece(to)->is_white != piece.is_white)))
 			&& abs(FromArr[0] - ToArr[0]) <= 1 && abs(FromArr[1] - ToArr[1]) <= 1)
 			return (true);
 	}
@@ -126,11 +126,11 @@ bool	IsValidRookMove(int from, int to, Board &board, t_piece &piece)
 	int current = from + step;
 	while (current != to)
 	{
-		if (board.Check_Piece(board, current))
+		if (board.Check_Piece(current))
 			return false;
 		current += step;
 	}
-	if (board.Check_Piece(board, to) && board.Check_Piece(board, to)->is_white == piece.is_white)
+	if (board.Check_Piece(to) && board.Check_Piece(to)->is_white == piece.is_white)
 		return (false);
 	return (true);
 }
@@ -148,7 +148,7 @@ bool	IsLegalMove(int from, int to, Board &board, t_piece &piece)
 		temp.MovePiece(FromArr, ToArr);
 		for (int i = 0; i < 64; i++)
 		{
-			t_piece *king_piece = temp.Check_Piece(temp, i);
+			t_piece *king_piece = temp.Check_Piece(i);
 			if (king_piece && king_piece->piece_type == KING && king_piece->is_white == piece.is_white)
 			{
 				if (temp.isSquareAttacked(i, king_piece->is_white))

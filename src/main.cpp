@@ -5,6 +5,8 @@ int main()
 	Board board;
 	bool isWhiteTurn = true;
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1"); // Set to "1" for good quality scaling
+	board.RenderBoard();
+	sleep(1);
 	while (!board.quit)
 	{
 		board.HandleEvents();
@@ -21,8 +23,8 @@ int main()
 			pair<int, int> randomMove = MovesWhite[randomIndex];
 			int from[2] = {randomMove.first / 8, randomMove.first % 8};
 			int to[2] = {randomMove.second / 8, randomMove.second % 8};
-			if (board.Check_Piece(board, randomMove.first) && IsLegalMove(randomMove.first, randomMove.second, board,
-				*board.Check_Piece(board, randomMove.first)))
+			if (board.Check_Piece(randomMove.first) && IsLegalMove(randomMove.first, randomMove.second, board,
+				*board.Check_Piece(randomMove.first)))
 			{
 				board.MovePiece(from, to);
 				board.RenderBoard();
@@ -37,7 +39,8 @@ int main()
 				pair<int, int> move = board.PlayerMove;
 				int from[2] = {move.first / 8, move.first % 8};
 				int to[2] = {move.second / 8, move.second % 8};
-				if (board.Check_Piece(board, move.first) && IsLegalMove(move.first, move.second, board, *board.Check_Piece(board, move.first)))
+				if (board.Check_Piece(move.first) && IsLegalMove(move.first, move.second,
+					board, *board.Check_Piece(move.first)))
 				{
 					board.MovePiece(from, to);
 					board.RenderBoard();

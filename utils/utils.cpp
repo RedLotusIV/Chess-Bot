@@ -86,7 +86,7 @@ bool Board::isSquareAttacked(int square, bool is_white)
 {
 	for (int from = 0; from < 64; from++)
 	{
-		t_piece* piece = Check_Piece(*this, from);
+		t_piece* piece = this->Check_Piece(from);
 		if (piece && piece->is_white != is_white)
 		{
 			if (IsValidMove(from, square, *this, *piece))
