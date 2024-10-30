@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <array>
 #include <bitset>
 #include <sstream>
 #include <map>
@@ -78,6 +79,7 @@ class Board
 		void					UnsetOthers(int Square);
 		t_piece 				*Check_Piece(int square);
 		vector<pair<int, int>>	GenerateMoves(bool isWhite);
+		void					set_piece_from_fen(char ch, int square);
 		void					set_from_fen(const string& fen);
 		bool					isSquareAttacked(int square, bool is_white);
 		t_piece					&get_white_pawns(void) { return (BoardMap["WhitePawns"]); }
