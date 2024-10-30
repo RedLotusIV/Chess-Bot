@@ -2,7 +2,6 @@
 # define CHESS_H
 
 #include <sys/stat.h>
-#include <bits/stdc++.h>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -55,20 +54,19 @@ class Board
 		map<string, t_piece>	BoardMap;
 		unsigned int			castlingRights;
 		int						enPassantSquare;
+		SDL_Window*				window = NULL;
+		SDL_Renderer*			renderer = NULL;
+		bool					quit = false;
+		bool					dragging = false;
+		bool 					isWhiteTurn = true;
+		bool					PlayerTurn = false;
+		bool					suggestionsOn = false;
+		e_piece					PlayerColor = WHITE;
+		pair<int, int>			PlayerMove = make_pair(-1, -1);
+		SDL_Event				e;
+		SDL_Point				dragStart;
+		SDL_Point				dragEnd;
 	public:
-		// variables
-		SDL_Window*		window = NULL;
-		SDL_Renderer*	renderer = NULL;
-		bool			quit = false;
-		bool			dragging = false;
-		bool 			isWhiteTurn = true;
-		bool			PlayerTurn = false;
-		bool			suggestionsOn = false;
-		e_piece			PlayerColor = WHITE;
-		pair<int, int>	PlayerMove = make_pair(-1, -1);
-		SDL_Event		e;
-		SDL_Point		dragStart;
-		SDL_Point		dragEnd;
 		Board(void);
 		~Board(void);
 		

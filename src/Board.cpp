@@ -49,32 +49,28 @@ void Board::SetPiece(U64 &bitboard, int FromSquare, int ToSquare)
 
 t_piece *Board::Check_Piece(int square)
 {
-    if (this->get_white_pawns().Type & (1ULL << square))
-        return &this->get_white_pawns();
-    else if (this->get_white_knights().Type & (1ULL << square))
-        return &this->get_white_knights();
-    else if (this->get_white_bishops().Type & (1ULL << square))
-        return &this->get_white_bishops();
-    else if (this->get_white_rooks().Type & (1ULL << square))
-        return &this->get_white_rooks();
-    else if (this->get_white_queen().Type & (1ULL << square))
-        return &this->get_white_queen();
-    else if (this->get_white_king().Type & (1ULL << square))
-        return &this->get_white_king();
-    else if (this->get_black_pawns().Type & (1ULL << square))
-        return &this->get_black_pawns();
-    else if (this->get_black_knights().Type & (1ULL << square))
-        return &this->get_black_knights();
-    else if (this->get_black_bishops().Type & (1ULL << square))
-        return &this->get_black_bishops();
-    else if (this->get_black_rooks().Type & (1ULL << square))
-        return &this->get_black_rooks();
-    else if (this->get_black_queen().Type & (1ULL << square))
-        return &this->get_black_queen();
-    else if (this->get_black_king().Type & (1ULL << square))
-        return &this->get_black_king();
-    else
-		return (nullptr);
+	static const array<pair<U64, t_piece*>, 12> pieceArray =
+	{
+		make_pair(this->get_white_pawns().Type, &this->get_white_pawns()),
+		make_pair(this->get_white_knights().Type, &this->get_white_knights()),
+		make_pair(this->get_white_bishops().Type, &this->get_white_bishops()),
+		make_pair(this->get_white_rooks().Type, &this->get_white_rooks()),
+		make_pair(this->get_white_queen().Type, &this->get_white_queen()),
+		make_pair(this->get_white_king().Type, &this->get_white_king()),
+		make_pair(this->get_black_pawns().Type, &this->get_black_pawns()),
+		make_pair(this->get_black_knights().Type, &this->get_black_knights()),
+		make_pair(this->get_black_bishops().Type, &this->get_black_bishops()),
+		make_pair(this->get_black_rooks().Type, &this->get_black_rooks()),
+		make_pair(this->get_black_queen().Type, &this->get_black_queen()),
+		make_pair(this->get_black_king().Type, &this->get_black_king())
+	};
+
+	for (const auto& piece : pieceArray)
+	{
+		if (piece.first & (1ULL << square))
+			return piece.second;
+	}
+	return (nullptr);
 }
 
 void Board::MovePiece(int from[2], int to[2])

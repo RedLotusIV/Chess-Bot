@@ -24,7 +24,34 @@ int file_to_int(char file)
 			return (-1);
 	}
 }
-void	Board::set_from_fen(const string& fen)
+
+void Board::set_piece_from_fen(char ch, int square)
+{
+	bool is_white = isupper(ch);
+	switch (tolower(ch))
+	{
+		case 'p':
+			SetPiece(is_white ? BoardMap["WhitePawns"].Type : BoardMap["BlackPawns"].Type, -1, square);
+			break;
+		case 'n':
+			SetPiece(is_white ? BoardMap["WhiteKnights"].Type : BoardMap["BlackKnights"].Type, -1, square);
+			break;
+		case 'b':
+			SetPiece(is_white ? BoardMap["WhiteBishops"].Type : BoardMap["BlackBishops"].Type, -1, square);
+			break;
+		case 'r':
+			SetPiece(is_white ? BoardMap["WhiteRooks"].Type : BoardMap["BlackRooks"].Type, -1, square);
+			break;
+		case 'q':
+			SetPiece(is_white ? BoardMap["WhiteQueens"].Type : BoardMap["BlackQueens"].Type, -1, square);
+			break;
+		case 'k':
+			SetPiece(is_white ? BoardMap["WhiteKing"].Type : BoardMap["BlackKing"].Type, -1, square);
+			break;
+	}
+}
+
+void Board::set_from_fen(const string& fen)
 {
 	Board_init();
 	int square = 56;
@@ -38,28 +65,7 @@ void	Board::set_from_fen(const string& fen)
 			square += ch - '0';
 		else
 		{
-			bool is_white = isupper(ch);
-			switch (tolower(ch))
-			{
-				case 'p':
-					SetPiece(is_white ? BoardMap["WhitePawns"].Type : BoardMap["BlackPawns"].Type, -1, square);
-					break;
-				case 'n':
-					SetPiece(is_white ? BoardMap["WhiteKnights"].Type : BoardMap["BlackKnights"].Type, -1, square);
-					break;
-				case 'b':
-					SetPiece(is_white ? BoardMap["WhiteBishops"].Type : BoardMap["BlackBishops"].Type, -1, square);
-					break;
-				case 'r':
-					SetPiece(is_white ? BoardMap["WhiteRooks"].Type : BoardMap["BlackRooks"].Type, -1, square);
-					break;
-				case 'q':
-					SetPiece(is_white ? BoardMap["WhiteQueens"].Type : BoardMap["BlackQueens"].Type, -1, square);
-					break;
-				case 'k':
-					SetPiece(is_white ? BoardMap["WhiteKing"].Type : BoardMap["BlackKing"].Type, -1, square);
-					break;
-			}
+			set_piece_from_fen(ch, square);
 			square++;
 		}
 	}
